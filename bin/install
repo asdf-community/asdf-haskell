@@ -78,7 +78,7 @@ EOF
 
         cat <<EOF > $local_bin/runhaskell
 #!/usr/bin/env bash
-exec $local_bin/stack exec runghc -- \$*
+exec $local_bin/stack exec runhaskell -- \$*
 EOF
 
         chmod +x $local_bin/*
