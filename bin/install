@@ -50,7 +50,38 @@ ghc_install() {
 #!/usr/bin/env bash
 exec $stack_path/stack --stack-root "$stack_root" --local-bin-path "$local_bin" --compiler "ghc-$version" \$*
 EOF
-        chmod +x $local_bin/stack
+
+        cat <<EOF > $local_bin/ghc
+#!/usr/bin/env bash
+exec $local_bin/stack exec ghc -- \$*
+EOF
+
+        cat <<EOF > $local_bin/ghci
+#!/usr/bin/env bash
+exec $local_bin/stack exec ghci -- \$*
+EOF
+
+        cat <<EOF > $local_bin/ghc-pkg
+#!/usr/bin/env bash
+exec $local_bin/stack exec ghc-pkg -- \$*
+EOF
+
+        cat <<EOF > $local_bin/haddock
+#!/usr/bin/env bash
+exec $local_bin/stack exec haddock -- \$*
+EOF
+
+        cat <<EOF > $local_bin/runghc
+#!/usr/bin/env bash
+exec $local_bin/stack exec runghc -- \$*
+EOF
+
+        cat <<EOF > $local_bin/runhaskell
+#!/usr/bin/env bash
+exec $local_bin/stack exec runghc -- \$*
+EOF
+
+        chmod +x $local_bin/*
 
         $local_bin/stack --install-ghc setup
 
