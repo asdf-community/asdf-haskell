@@ -1,0 +1,37 @@
+language: generic
+
+matrix:
+  include:
+    - os: linux
+      services:
+        - docker
+      script:
+        - |
+          bash -c "while true; do echo \$(date) - travis building ...; sleep 540; done" &
+          export PING_LOOP_PID=$!
+        - |
+          cat <<-EOF | docker run -i ubuntu bash -
+          set -e
+          export DEBIAN_FRONTEND=noninteractive
+          export CABALFLAGS=--ghc-option=-O0
+          apt-get update -qq && apt-get install -qq git curl build-essential
+          git clone https://github.com/asdf-vm/asdf.git
+          . asdf/asdf.sh
+          asdf plugin-test haskell https://github.com/vic/asdf-haskell.git 'ghc --help'
+          EOF
+      after_script:
+        - kill -9 $PING_LOOP_PID
+
+    - os: osx
+      env:
+        - "CABALFLAGS=--ghc-option=-O0"
+      before_script:
+        - git clone https://github.com/asdf-vm/asdf.git
+        - . asdf/asdf.sh
+      script:
+        - |
+          bash -c "while true; do echo \$(date) - travis building ...; sleep 540; done" &
+          export PING_LOOP_PID=$!
+        - asdf plugin-test haskell https://github.com/vic/asdf-haskell.git 'ghc --help'
+      after_script:
+        - kill -9 $PING_LOOP_PID

@@ -1,0 +1,56 @@
+#!/usr/bin/env bash
+
+ghc_version () {
+    local version=$1
+    local url=https://downloads.haskell.org/~ghc/${version}/
+    curl -s "$url" | grep -oE 'ghc-.*?-' | head -n 1 | sed -e 's/ghc-//g' | sed -e 's/-//g'
+}
+
+ghc_install() {
+    local install_type=$1
+    local release=$2
+    local version=$(ghc_version $release)
+    local install_path=$3
+
+    local tmp_dir=$(mktemp -d -t haskell_XXXXXXX)
+
+    local current_script_path=$(dirname ${BASH_SOURCE[0]})
+    local plugin_path=$(dirname $current_script_path)
+    local stack_path=$plugin_path/stack
+    export PATH=$stack_path:$PATH
+
+    if [ "$install_type" != "version" ]; then
+        echo "asdf-haskell supports release installs only."
+        exit 1
+    fi
+
+    if [ ! -x $stack_path/stack ]; then
+        source $plugin_path/bin/get_haskell_stack
+        mkdir -p $stack_path
+        get_haskell_stack $stack_path $stack_path >/dev/null
+    fi
+
+    # running this in a subshell
+    # we don't want to disturb current working dir
+    (
+        set -e
+        cd $tmp_dir
+
+        local local_bin=$install_path/bin
+        local stack_root=$install_path/stack
+
+        mkdir -p $stack_root
+        mkdir -p $local_bin
+
+        cat <<EOF > $local_bin/stack
+#!/usr/bin/env bash
+exec $stack_path/stack --stack-root "$stack_root" --local-bin-path "$local_bin" --compiler "ghc-$version" \$*
+EOF
+        chmod +x $local_bin/stack
+
+        $local_bin/stack --install-ghc setup
+    ) || (rm -rf $install_path; exit 1)
+
+}
+
+ghc_install $ASDF_INSTALL_TYPE $ASDF_INSTALL_VERSION $ASDF_INSTALL_PATH
