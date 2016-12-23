@@ -2,8 +2,8 @@
 
 ghc_version () {
     local version=$1
-    local url=https://downloads.haskell.org/~ghc/${version}/
-    curl -s "$url" | grep -oE 'ghc-.*?-' | head -n 1 | sed -e 's/ghc-//g' | sed -e 's/-//g'
+    local url="https://downloads.haskell.org/~ghc/${version}/"
+    curl -s "$url" | grep -oE 'ghc-[^-]+' | head -n 1 | sed -e 's/ghc-//g'
 }
 
 ghc_install() {
@@ -30,6 +30,7 @@ ghc_install() {
         get_haskell_stack $stack_path $stack_path >/dev/null
     fi
 
+
     # running this in a subshell
     # we don't want to disturb current working dir
     (
@@ -41,6 +42,9 @@ ghc_install() {
 
         mkdir -p $stack_root
         mkdir -p $local_bin
+
+        echo "Installing Haskell $release (ghc-$version)"
+        echo "STACK_ROOT=$stack_root"
 
         cat <<EOF > $local_bin/stack
 #!/usr/bin/env bash
