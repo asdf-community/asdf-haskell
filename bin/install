@@ -53,8 +53,8 @@ EOF
         chmod +x $local_bin/stack
 
         $local_bin/stack --install-ghc setup
-    ) || (rm -rf $install_path; exit 1)
 
+    ) || (rm -rf $install_path; exit 1)
 }
 
 ghc_install $ASDF_INSTALL_TYPE $ASDF_INSTALL_VERSION $ASDF_INSTALL_PATH
