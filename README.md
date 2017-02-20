@@ -1,4 +1,6 @@
 # asdf-haskell
+[![help maintain this lib](https://img.shields.io/badge/looking%20for%20maintainer-DM%20%40vborja-663399.svg)](https://twitter.com/vborja)
+
 
 [Haskell](https://www.haskell.org) plugin for [asdf](https://github.com/asdf-vm/asdf) version manager
 
