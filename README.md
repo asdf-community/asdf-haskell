@@ -11,6 +11,8 @@
 asdf plugin-add haskell https://github.com/vic/asdf-haskell.git
 ```
 
+Note: Do not install `stack` separately. 
+
 ## Use
 
 This plugin uses a local [Stack](https://haskellstack.org) installation
