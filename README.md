@@ -13,8 +13,8 @@ asdf plugin-add haskell https://github.com/vic/asdf-haskell.git
 
 ## Use
 
-This plugin uses a local [Stack](https://haskellstack.org) installation
-(inside asdf-haskell `stack/` directory) to manage GHC versions.
+This plugin will create a local [Stack](https://haskellstack.org) installation
+(inside asdf-haskell `stack/` directory) to manage GHC versions. So you dont need to have already installed stack.
 
 After installation, `stack`, `ghc`, `ghci`, and `runhaskell` will be available on your path.
 
