@@ -422,7 +422,7 @@ See http://docs.haskellstack.org/en/stable/install_and_upgrade/"
 # using 'curl' or 'wget'.
 dl_to_stdout() {
   if has_curl ; then
-    curl ${QUIET:+-sS} -L "$@"
+    curl --compressed ${QUIET:+-sS} -L "$@"
   elif has_wget ; then
     wget ${QUIET:+-q} -O- "$@"
   else
