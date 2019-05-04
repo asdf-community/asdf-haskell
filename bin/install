@@ -3,7 +3,7 @@
 ghc_version () {
     local version=$1
     local url="https://downloads.haskell.org/~ghc/${version}/"
-    curl -s "$url" | grep -oE 'ghc-[^-]+' | head -n 1 | sed -e 's/ghc-//g'
+    curl --compressed -s "$url" | grep -oE 'ghc-[^-]+' | head -n 1 | sed -e 's/ghc-//g'
 }
 
 ghc_install() {
