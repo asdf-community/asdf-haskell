@@ -60,7 +60,7 @@ post_install_separator() {
 
 # determines the the CPU's instruction set
 get_isa() {
-  if arch | grep -q arm ; then
+  if uname -m | grep -q arm ; then
     echo arm
   else
     echo x86
